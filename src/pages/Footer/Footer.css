@@ -1,0 +1,97 @@
+.footer{
+    margin-top: 100px;
+    background: rgba(3,0,16,0.95);
+    padding: 30px 0 24px;
+    position: relative;
+}
+
+.footer-line{
+    position: absolute;
+    top: 0; left: 0;
+    width: 100%;
+    height: 1px;
+    background: linear-gradient(90deg, transparent, #7000ff, #00bfff, #7000ff, transparent);
+    box-shadow: 0 0 12px rgba(0,180,255,0.6);
+}
+
+.footer-container{
+    max-width: 1200px;
+    margin: auto;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 0 40px;
+}
+
+.footer-left{
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
+}
+
+.footer-logo{
+    font-size: 18px;
+    font-weight: 700;
+    letter-spacing: 3px;
+    color: #e0d0ff;
+    text-shadow: 0 0 10px rgba(160,80,255,0.5);
+}
+
+.footer-logo span{
+    color: #00bfff;
+    text-shadow: 0 0 10px rgba(0,180,255,0.8);
+}
+
+.footer-copy{
+    font-size: 11px;
+    color: rgba(80,70,130,0.7);
+    letter-spacing: 1px;
+    font-family: monospace;
+}
+
+/* STATUS */
+
+.footer-status{
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    font-size: 11px;
+    letter-spacing: 3px;
+    color: rgba(0,200,100,0.7);
+    font-family: monospace;
+    text-transform: uppercase;
+}
+
+.status-dot{
+    width: 7px;
+    height: 7px;
+    border-radius: 50%;
+    background: #00c853;
+    box-shadow: 0 0 8px rgba(0,200,83,0.9);
+    animation: pulse 2s ease-in-out infinite;
+}
+
+@keyframes pulse{
+    0%, 100%{ transform: scale(1); opacity: 1; }
+    50%{ transform: scale(1.4); opacity: 0.6; }
+}
+
+/* ICONS */
+
+.social-icons{
+    display: flex;
+    gap: 18px;
+}
+
+.social-icons a{
+    font-size: 20px;
+    color: #7040ff;
+    transition: 0.3s;
+    filter: drop-shadow(0 0 4px rgba(100,0,255,0.4));
+}
+
+.social-icons a:hover{
+    transform: translateY(-4px) scale(1.2);
+    color: #00bfff;
+    filter: drop-shadow(0 0 10px rgba(0,180,255,0.9));
+}
