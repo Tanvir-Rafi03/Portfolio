@@ -1,0 +1,71 @@
+/* Hide default cursor */
+* {
+  cursor: none !important;
+}
+
+/* INNER DOT */
+.cursor-dot {
+  position: fixed;
+  width: 6px;
+  height: 6px;
+  background: #00bfff;
+  border-radius: 50%;
+  pointer-events: none;
+  z-index: 99999;
+  transform: translate(-50%, -50%);
+  transition: width 0.2s, height 0.2s, background 0.2s;
+  box-shadow: 0 0 8px rgba(0, 191, 255, 1), 0 0 20px rgba(0, 191, 255, 0.5);
+}
+
+/* OUTER RING */
+.cursor-ring {
+  position: fixed;
+  width: 36px;
+  height: 36px;
+  border: 1px solid rgba(0, 191, 255, 0.6);
+  border-radius: 50%;
+  pointer-events: none;
+  z-index: 99998;
+  transform: translate(-50%, -50%);
+  transition: width 0.3s, height 0.3s, border-color 0.3s, background 0.3s;
+  box-shadow: 0 0 10px rgba(0, 191, 255, 0.2), inset 0 0 10px rgba(100, 0, 255, 0.05);
+}
+
+/* Corner notches on the ring */
+.cursor-ring::before,
+.cursor-ring::after {
+  content: "";
+  position: absolute;
+  width: 5px;
+  height: 5px;
+  border-color: #7000ff;
+  border-style: solid;
+}
+
+.cursor-ring::before {
+  top: -1px;
+  left: -1px;
+  border-width: 1px 0 0 1px;
+}
+
+.cursor-ring::after {
+  bottom: -1px;
+  right: -1px;
+  border-width: 0 1px 1px 0;
+}
+
+/* HOVER STATE */
+.cursor-dot.cursor-hover {
+  width: 10px;
+  height: 10px;
+  background: #bf80ff;
+  box-shadow: 0 0 12px rgba(191, 128, 255, 1), 0 0 30px rgba(100, 0, 255, 0.6);
+}
+
+.cursor-ring.cursor-hover {
+  width: 52px;
+  height: 52px;
+  border-color: rgba(160, 80, 255, 0.7);
+  background: rgba(100, 0, 255, 0.05);
+  box-shadow: 0 0 20px rgba(120, 0, 255, 0.25);
+}
