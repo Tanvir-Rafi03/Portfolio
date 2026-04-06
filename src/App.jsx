@@ -1,4 +1,6 @@
 import { useEffect } from "react"
+import Cursor from "./components/Cursor"
+import ParticleNet from "./components/ParticleNet"
 import Header from "./components/Header"
 import Hero from "./pages/Hero/Hero"
 import About from "./pages/About/About"
@@ -39,6 +41,8 @@ function App() {
 
   return (
     <>
+      <Cursor />
+      <ParticleNet />
       <div id="scroll-bar"></div>
       <div className="noise-overlay"></div>
       <Header />
