@@ -548,3 +548,191 @@ body::after {
     .hdr-status-dot  { animation: none; }
     .header { transition: none; }
 }
+
+/* ── HAMBURGER BUTTON ────────────────────── */
+
+.hdr-hamburger {
+  display: none;
+  flex-direction: column;
+  justify-content: center;
+  gap: 5px;
+  width: 36px;
+  height: 36px;
+  background: none;
+  border: 1px solid rgba(80, 0, 200, 0.3);
+  border-radius: 4px;
+  cursor: pointer;
+  padding: 0 8px;
+  position: relative;
+  z-index: 3;
+  flex-shrink: 0;
+  transition: border-color 0.2s;
+}
+
+.hdr-hamburger:hover {
+  border-color: rgba(0, 191, 255, 0.5);
+}
+
+.hdr-hamburger span {
+  display: block;
+  width: 100%;
+  height: 1.5px;
+  background: rgba(160, 140, 220, 0.8);
+  border-radius: 2px;
+  transition: transform 0.25s, opacity 0.25s, background 0.2s;
+  transform-origin: center;
+}
+
+.hdr-hamburger--open span:nth-child(1) {
+  transform: translateY(6.5px) rotate(45deg);
+  background: #00bfff;
+}
+.hdr-hamburger--open span:nth-child(2) {
+  opacity: 0;
+  transform: scaleX(0);
+}
+.hdr-hamburger--open span:nth-child(3) {
+  transform: translateY(-6.5px) rotate(-45deg);
+  background: #00bfff;
+}
+
+/* ── MOBILE MENU ─────────────────────────── */
+
+.hdr-mobile-menu {
+  display: none;
+  position: fixed;
+  top: 86px;
+  left: 5%;
+  right: 5%;
+  z-index: 999;
+  background: rgba(4, 0, 18, 0.97);
+  border: 1px solid rgba(80, 0, 200, 0.35);
+  border-radius: 8px;
+  backdrop-filter: blur(16px);
+  box-shadow: 0 8px 40px rgba(0, 0, 0, 0.7), 0 0 40px rgba(80, 0, 200, 0.15);
+  padding: 12px;
+  animation: mobileMenuIn 0.2s cubic-bezier(0.16, 1, 0.3, 1) both;
+  clip-path: polygon(0 0, calc(100% - 12px) 0, 100% 12px, 100% 100%, 12px 100%, 0 calc(100% - 12px));
+}
+
+@keyframes mobileMenuIn {
+  from { opacity: 0; transform: translateY(-10px); }
+  to   { opacity: 1; transform: none; }
+}
+
+.hdr-mobile-nav {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  margin-bottom: 12px;
+}
+
+.hdr-mobile-link {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  width: 100%;
+  padding: 12px 14px;
+  background: none;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+  text-align: left;
+  transition: background 0.2s;
+  border-bottom: 1px solid rgba(80, 0, 200, 0.1);
+}
+
+.hdr-mobile-link:last-child {
+  border-bottom: none;
+}
+
+.hdr-mobile-link:hover,
+.hdr-mobile-link--active {
+  background: rgba(0, 191, 255, 0.05);
+}
+
+.hdr-mobile-num {
+  font-family: monospace;
+  font-size: 9px;
+  letter-spacing: 2px;
+  color: rgba(0, 191, 255, 0.4);
+  width: 20px;
+  flex-shrink: 0;
+}
+
+.hdr-mobile-label {
+  font-family: monospace;
+  font-size: 12px;
+  letter-spacing: 3px;
+  color: rgba(160, 140, 220, 0.75);
+  text-transform: uppercase;
+}
+
+.hdr-mobile-link--active .hdr-mobile-label {
+  color: #00bfff;
+}
+
+.hdr-mobile-link--active .hdr-mobile-num {
+  color: rgba(0, 191, 255, 0.7);
+}
+
+.hdr-mobile-socials {
+  display: flex;
+  gap: 10px;
+  padding-top: 8px;
+  border-top: 1px solid rgba(80, 0, 200, 0.2);
+}
+
+.hdr-mobile-socials a {
+  flex: 1;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 7px;
+  padding: 9px;
+  background: rgba(60, 0, 120, 0.15);
+  border: 1px solid rgba(80, 0, 200, 0.25);
+  border-radius: 4px;
+  color: rgba(140, 120, 200, 0.7);
+  font-family: monospace;
+  font-size: 10px;
+  letter-spacing: 2px;
+  text-decoration: none;
+  transition: color 0.2s, border-color 0.2s, background 0.2s;
+}
+
+.hdr-mobile-socials a:hover {
+  color: #00bfff;
+  border-color: rgba(0, 191, 255, 0.4);
+  background: rgba(0, 191, 255, 0.05);
+}
+
+/* ── MOBILE BREAKPOINT ───────────────────── */
+
+@media (max-width: 768px) {
+  .hdr-nav,
+  .hdr-right  { display: none; }
+  .hdr-hamburger { display: flex; }
+  .hdr-mobile-menu { display: block; }
+
+  .header {
+    width: 92%;
+    padding: 0 16px;
+    height: 52px;
+  }
+}
+
+/* ── SECTION TITLE — mobile ──────────────── */
+
+@media (max-width: 480px) {
+  .section-title h2 {
+    font-size: 30px;
+    letter-spacing: 4px;
+  }
+
+  .about,
+  .project,
+  .services {
+    padding: 24px 16px;
+  }
+}

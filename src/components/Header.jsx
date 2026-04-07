@@ -16,6 +16,7 @@ export default function Header() {
   const [active,   setActive]   = useState("hero")
   const [scanPos,  setScanPos]  = useState(-100)
   const [spotlight, setSpotlight] = useState({ x: 50, y: 50, show: false })
+  const [menuOpen, setMenuOpen] = useState(false)
   const headerRef = useRef(null)
   const scanRef   = useRef(null)
   const rafRef    = useRef(null)
@@ -69,6 +70,7 @@ export default function Header() {
   }
 
   const scrollTo = (id) => {
+    setMenuOpen(false)
     const el = document.getElementById(id)
     if (!el) return
     if (window["__lenis"]) window["__lenis"].scrollTo(el, { offset: -80, duration: 1.0 })
@@ -76,6 +78,7 @@ export default function Header() {
   }
 
   return (
+    <>
     <header
       ref={headerRef}
       className={`header ${scrolled ? "scroll" : ""}`}
@@ -156,6 +159,42 @@ export default function Header() {
           </a>
         </div>
       </div>
+
+      {/* ── HAMBURGER (mobile only) ── */}
+      <button
+        className={`hdr-hamburger ${menuOpen ? "hdr-hamburger--open" : ""}`}
+        onClick={() => setMenuOpen(o => !o)}
+        aria-label="Toggle navigation"
+      >
+        <span /><span /><span />
+      </button>
     </header>
+
+    {/* ── MOBILE MENU ── */}
+    {menuOpen && (
+      <div className="hdr-mobile-menu">
+        <nav className="hdr-mobile-nav">
+          {NAV.map(({ id, label, num }) => (
+            <button
+              key={id}
+              className={`hdr-mobile-link ${active === id ? "hdr-mobile-link--active" : ""}`}
+              onClick={() => scrollTo(id)}
+            >
+              <span className="hdr-mobile-num">{num}</span>
+              <span className="hdr-mobile-label">{label}</span>
+            </button>
+          ))}
+        </nav>
+        <div className="hdr-mobile-socials">
+          <a href="https://github.com/Tanvir-Rafi03" target="_blank" rel="noopener noreferrer">
+            <FontAwesomeIcon icon={faGithub} /> GitHub
+          </a>
+          <a href="https://linkedin.com" target="_blank" rel="noopener noreferrer">
+            <FontAwesomeIcon icon={faLinkedin} /> LinkedIn
+          </a>
+        </div>
+      </div>
+    )}
+    </>
   )
 }
