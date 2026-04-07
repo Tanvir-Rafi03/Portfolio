@@ -1,7 +1,6 @@
 {
   "name": "my-react-app",
   "private": true,
-  "homepage": "https://saboo24.github.io/Portfolio11",
   "version": "0.0.0",
   "type": "module",
   "scripts": {
