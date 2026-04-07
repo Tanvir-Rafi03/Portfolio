@@ -1,0 +1,11 @@
+{
+  "timestamp": "2026-04-07T00:10:11.195Z",
+  "projectRoot": "/Users/tanvir/Downloads/Portfolio11-main",
+  "structure": {
+    "hasPackageJson": true,
+    "hasTsConfig": false,
+    "hasClaudeConfig": true,
+    "hasClaudeFlow": true
+  },
+  "scannedAt": 1775520611195
+}
