@@ -454,6 +454,10 @@
   animation: glitchFlash 0.8s steps(1) forwards;
 }
 
+@media (max-width: 768px) {
+  .cp-trigger { display: none; }
+}
+
 @keyframes glitchFlash {
   0%   { background: rgba(0,191,255,0.08); }
   10%  { background: rgba(112,0,255,0.12); clip-path: inset(20% 0 60% 0); }

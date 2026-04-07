@@ -441,6 +441,27 @@
   }
 }
 
+/* ── MOBILE ────────────────────────────── */
+@media (max-width: 480px) {
+  .boot-logo-ch {
+    font-size: 38px;
+    letter-spacing: 4px;
+  }
+
+  .boot-terminal-body {
+    font-size: 11px;
+    padding: 12px 14px 14px;
+  }
+
+  .boot-progress-pct {
+    font-size: 22px;
+  }
+
+  .boot-side {
+    display: none;
+  }
+}
+
 /* ── REDUCED MOTION ────────────────────── */
 @media (prefers-reduced-motion: reduce) {
   .boot-beam,
