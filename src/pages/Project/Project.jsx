@@ -9,6 +9,7 @@ const projects = [
     skills: ["TypeScript", "React", "PostgreSQL", "AI"],
     category: "fullstack",
     featured: true,
+    demo: "https://ai-resume-builder-seven-woad.vercel.app",
     github: "https://github.com/Tanvir-Rafi03/Ai-Resume-Builder",
     gradient: "linear-gradient(135deg, rgba(0,100,255,0.18) 0%, rgba(112,0,255,0.22) 100%)",
     accent: "#00bfff",
@@ -30,6 +31,7 @@ const projects = [
     skills: ["JavaScript", "Electron", "CSS", "HTML"],
     category: "frontend",
     featured: false,
+    demo: "https://photobooth-two-phi.vercel.app/",
     github: "https://github.com/Tanvir-Rafi03/Photobooth",
     gradient: "linear-gradient(135deg, rgba(255,120,0,0.12) 0%, rgba(255,60,120,0.15) 100%)",
     accent: "#ff7b54",
@@ -50,6 +52,7 @@ const projects = [
     skills: ["Node.js", "Express", "PostgreSQL", "Tailwind", "EJS"],
     category: "fullstack",
     featured: false,
+    demo: "https://ecoworld-climate-solutions.vercel.app",
     github: "https://github.com/Tanvir-Rafi03/ecoworld-climate-solutions",
     gradient: "linear-gradient(135deg, rgba(0,200,83,0.12) 0%, rgba(0,150,60,0.18) 100%)",
     accent: "#00c853",
@@ -69,6 +72,8 @@ const projects = [
     skills: ["HTML", "CSS", "JavaScript"],
     category: "frontend",
     featured: false,
+    demo: null,
+    download: "https://github.com/Tanvir-Rafi03/Calendar/releases/download/v1.0.0/Calendar-1.0.0-arm64.dmg",
     github: "https://github.com/Tanvir-Rafi03/Calendar",
     gradient: "linear-gradient(135deg, rgba(160,80,255,0.14) 0%, rgba(0,100,255,0.12) 100%)",
     accent: "#bf80ff",
@@ -186,7 +191,12 @@ function ProjectCard({ p, index }) {
               </svg>
               GitHub
             </a>
-            <a href={p.github} target="_blank" rel="noopener noreferrer" className="btn btn-fill">Live Demo</a>
+            {p.demo && (
+              <a href={p.demo} target="_blank" rel="noopener noreferrer" className="btn btn-fill">Live Demo</a>
+            )}
+            {!p.demo && p.download && (
+              <a href={p.download} className="btn btn-fill">Download</a>
+            )}
           </div>
         </div>
         <div className="card-index">{p.index}</div>
