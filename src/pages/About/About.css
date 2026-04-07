@@ -456,3 +456,40 @@
     max-width: 100%;
   }
 }
+
+@media (max-width: 768px) {
+  .about {
+    padding: 24px 16px;
+  }
+
+  .about-title h2 {
+    font-size: 36px;
+    letter-spacing: 5px;
+  }
+
+  .photo-card {
+    width: 240px;
+    height: 320px;
+  }
+
+  .stats-row {
+    gap: 16px;
+    flex-wrap: wrap;
+    justify-content: center;
+  }
+
+  .stat-num {
+    font-size: 26px;
+  }
+}
+
+@media (max-width: 480px) {
+  .about-title h2 {
+    font-size: 28px;
+    letter-spacing: 4px;
+  }
+
+  .text-about p {
+    font-size: 14px;
+  }
+}
