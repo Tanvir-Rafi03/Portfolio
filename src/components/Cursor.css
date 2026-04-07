@@ -6,13 +6,15 @@
 /* INNER DOT */
 .cursor-dot {
   position: fixed;
+  top: 0;
+  left: 0;
   width: 6px;
   height: 6px;
   background: #00bfff;
   border-radius: 50%;
   pointer-events: none;
   z-index: 99999;
-  transform: translate(-50%, -50%);
+  will-change: transform;
   transition: width 0.2s, height 0.2s, background 0.2s;
   box-shadow: 0 0 8px rgba(0, 191, 255, 1), 0 0 20px rgba(0, 191, 255, 0.5);
 }
@@ -20,13 +22,15 @@
 /* OUTER RING */
 .cursor-ring {
   position: fixed;
+  top: 0;
+  left: 0;
   width: 36px;
   height: 36px;
   border: 1px solid rgba(0, 191, 255, 0.6);
   border-radius: 50%;
   pointer-events: none;
   z-index: 99998;
-  transform: translate(-50%, -50%);
+  will-change: transform;
   transition: width 0.3s, height 0.3s, border-color 0.3s, background 0.3s;
   box-shadow: 0 0 10px rgba(0, 191, 255, 0.2), inset 0 0 10px rgba(100, 0, 255, 0.05);
 }

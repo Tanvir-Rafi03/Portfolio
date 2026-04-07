@@ -1,0 +1,450 @@
+/* ═══════════════════════════════════════════
+   BOOT SCREEN — Cyberpunk OS Startup
+═══════════════════════════════════════════ */
+
+.boot-screen {
+  position: fixed;
+  inset: 0;
+  z-index: 99999;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  overflow: hidden;
+
+  background-color: #02000f;
+  background-image:
+    linear-gradient(rgba(100, 0, 255, 0.06) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(100, 0, 255, 0.06) 1px, transparent 1px),
+    radial-gradient(ellipse at 20% 50%, rgba(80, 0, 255, 0.12) 0%, transparent 55%),
+    radial-gradient(ellipse at 80% 20%, rgba(0, 180, 255, 0.08) 0%, transparent 50%);
+  background-size: 36px 36px, 36px 36px, 100% 100%, 100% 100%;
+}
+
+/* ── CRT scanlines overlay ─────────────── */
+.boot-crt {
+  position: absolute;
+  inset: 0;
+  background: repeating-linear-gradient(
+    to bottom,
+    transparent 0px,
+    transparent 3px,
+    rgba(0, 0, 0, 0.18) 3px,
+    rgba(0, 0, 0, 0.18) 4px
+  );
+  pointer-events: none;
+  z-index: 10;
+  animation: crtShift 8s linear infinite;
+}
+
+@keyframes crtShift {
+  0%   { background-position: 0 0; }
+  100% { background-position: 0 80px; }
+}
+
+/* ── Moving scan beam ──────────────────── */
+.boot-beam {
+  position: absolute;
+  left: 0; right: 0;
+  height: 200px;
+  background: linear-gradient(
+    to bottom,
+    transparent,
+    rgba(0, 191, 255, 0.025),
+    rgba(0, 191, 255, 0.05),
+    rgba(0, 191, 255, 0.025),
+    transparent
+  );
+  pointer-events: none;
+  z-index: 9;
+  animation: beamSweep 4s linear infinite;
+}
+
+@keyframes beamSweep {
+  0%   { top: -200px; }
+  100% { top: 100vh; }
+}
+
+/* ── HUD corner marks ──────────────────── */
+.boot-hud-corner {
+  position: fixed;
+  width: 28px;
+  height: 28px;
+  border-style: solid;
+  border-color: rgba(0, 191, 255, 0.6);
+  z-index: 20;
+  opacity: 0;
+  transition: opacity 0.4s, width 0.5s cubic-bezier(0.16,1,0.3,1), height 0.5s cubic-bezier(0.16,1,0.3,1);
+}
+
+.boot-hud-in {
+  opacity: 1;
+}
+
+.boot-hud-tl { top: 20px; left: 20px;   border-width: 2px 0 0 2px; }
+.boot-hud-tr { top: 20px; right: 20px;  border-width: 2px 2px 0 0; }
+.boot-hud-bl { bottom: 20px; left: 20px;  border-width: 0 0 2px 2px; }
+.boot-hud-br { bottom: 20px; right: 20px; border-width: 0 2px 2px 0; }
+
+/* corner glow */
+.boot-hud-tl::after, .boot-hud-tr::after,
+.boot-hud-bl::after, .boot-hud-br::after {
+  content: "";
+  position: absolute;
+  width: 5px;
+  height: 5px;
+  background: #00bfff;
+  border-radius: 50%;
+  box-shadow: 0 0 10px #00bfff, 0 0 20px rgba(0,191,255,0.5);
+}
+.boot-hud-tl::after { top: -1px; left: -1px; }
+.boot-hud-tr::after { top: -1px; right: -1px; }
+.boot-hud-bl::after { bottom: -1px; left: -1px; }
+.boot-hud-br::after { bottom: -1px; right: -1px; }
+
+/* ── Side data streams ─────────────────── */
+.boot-side {
+  position: fixed;
+  top: 0; bottom: 0;
+  width: 28px;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  gap: 10px;
+  padding: 60px 0;
+  z-index: 5;
+  pointer-events: none;
+}
+
+.boot-side--left  { left: 20px; align-items: flex-start; }
+.boot-side--right { right: 20px; align-items: flex-end; }
+
+.boot-side-char {
+  font-family: monospace;
+  font-size: 10px;
+  color: rgba(112, 0, 255, 0.4);
+  letter-spacing: 0;
+  animation: sideFlicker 1.8s ease-in-out infinite;
+  transition: color 0.2s;
+}
+
+@keyframes sideFlicker {
+  0%, 80%, 100% { opacity: 0.3; color: rgba(112, 0, 255, 0.4); }
+  40%           { opacity: 0.9; color: rgba(0, 191, 255, 0.7); }
+}
+
+/* ── INNER CONTAINER ───────────────────── */
+.boot-inner {
+  position: relative;
+  width: 700px;
+  max-width: 88vw;
+  z-index: 15;
+  display: flex;
+  flex-direction: column;
+  gap: 22px;
+}
+
+/* ── LOGO ──────────────────────────────── */
+.boot-logo-wrap {
+  text-align: center;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 6px;
+}
+
+.boot-logo-tag {
+  font-family: monospace;
+  font-size: 9px;
+  letter-spacing: 5px;
+  color: rgba(0, 191, 255, 0.4);
+  text-transform: uppercase;
+}
+
+.boot-logo {
+  display: flex;
+  gap: 2px;
+  justify-content: center;
+}
+
+.boot-logo-ch {
+  font-family: 'Courier New', monospace;
+  font-size: 62px;
+  font-weight: 900;
+  letter-spacing: 8px;
+  display: inline-block;
+  transition: color 0.15s, text-shadow 0.3s;
+  line-height: 1;
+}
+
+.boot-logo-ch--scramble {
+  color: rgba(112, 0, 255, 0.55);
+  text-shadow: 0 0 8px rgba(112, 0, 255, 0.5);
+  animation: charFlicker 0.08s linear infinite;
+}
+
+@keyframes charFlicker {
+  0%, 100% { opacity: 0.6; }
+  50%       { opacity: 1; }
+}
+
+.boot-logo-ch--resolved {
+  color: #e0d0ff;
+  text-shadow:
+    0 0 20px rgba(160, 80, 255, 0.7),
+    0 0 50px rgba(160, 80, 255, 0.25);
+  animation: none;
+}
+
+/* First char accent */
+.boot-logo-ch--resolved:first-child {
+  color: #00bfff;
+  text-shadow:
+    0 0 20px rgba(0, 191, 255, 1),
+    0 0 50px rgba(0, 191, 255, 0.4),
+    0 0 100px rgba(0, 191, 255, 0.15);
+}
+
+.boot-logo-sub {
+  font-family: monospace;
+  font-size: 10px;
+  letter-spacing: 5px;
+  color: rgba(144, 130, 200, 0.45);
+  text-transform: uppercase;
+  margin-top: 2px;
+}
+
+/* ── TERMINAL ──────────────────────────── */
+.boot-terminal {
+  background: rgba(0, 0, 12, 0.75);
+  border: 1px solid rgba(100, 0, 255, 0.3);
+  border-radius: 6px;
+  overflow: hidden;
+  box-shadow:
+    0 0 0 1px rgba(0, 191, 255, 0.04) inset,
+    0 0 40px rgba(80, 0, 200, 0.2),
+    0 0 80px rgba(0, 0, 30, 0.4);
+}
+
+/* Title bar */
+.boot-terminal-bar {
+  display: flex;
+  align-items: center;
+  gap: 7px;
+  padding: 8px 16px;
+  background: rgba(60, 0, 140, 0.18);
+  border-bottom: 1px solid rgba(100, 0, 255, 0.2);
+}
+
+.boot-terminal-dot {
+  width: 9px;
+  height: 9px;
+  border-radius: 50%;
+  background: rgba(100, 0, 255, 0.4);
+  border: 1px solid rgba(100, 0, 255, 0.5);
+}
+
+.boot-terminal-dot:nth-child(1) { background: rgba(255, 80, 80, 0.4); border-color: rgba(255,80,80,0.5); }
+.boot-terminal-dot:nth-child(2) { background: rgba(255, 200, 0, 0.4); border-color: rgba(255,200,0,0.5); }
+.boot-terminal-dot:nth-child(3) { background: rgba(0, 200, 80, 0.4);  border-color: rgba(0,200,80,0.5); }
+
+.boot-terminal-title {
+  margin-left: 8px;
+  font-family: monospace;
+  font-size: 10px;
+  letter-spacing: 3px;
+  color: rgba(0, 191, 255, 0.4);
+  flex: 1;
+  text-align: center;
+}
+
+/* Body */
+.boot-terminal-body {
+  padding: 16px 22px 18px;
+  font-family: 'Courier New', monospace;
+  font-size: 12.5px;
+  line-height: 1.85;
+  max-height: 220px;
+  overflow: hidden;
+}
+
+.boot-line {
+  display: flex;
+  align-items: baseline;
+  gap: 4px;
+  animation: lineIn 0.12s ease both;
+}
+
+@keyframes lineIn {
+  from { opacity: 0; transform: translateX(-4px); }
+  to   { opacity: 1; transform: none; }
+}
+
+.boot-prompt {
+  color: rgba(112, 0, 255, 0.8);
+  flex-shrink: 0;
+}
+
+.boot-text { color: rgba(130, 190, 255, 0.85); }
+
+.boot-line--header .boot-text {
+  color: rgba(0, 191, 255, 0.9);
+  letter-spacing: 2px;
+  font-size: 11px;
+}
+
+.boot-line--sep .boot-text {
+  color: rgba(100, 0, 255, 0.35);
+  letter-spacing: 0;
+}
+
+.boot-line--ok .boot-text {
+  color: rgba(130, 190, 255, 0.75);
+}
+
+.boot-line--ok .boot-text::after {
+  /* The [ OK ] part gets a green tint */
+}
+
+.boot-line--id .boot-text {
+  color: rgba(200, 230, 255, 0.9);
+  font-weight: bold;
+}
+
+.boot-line--launch .boot-text {
+  color: #00bfff;
+  text-shadow: 0 0 12px rgba(0, 191, 255, 0.7);
+  letter-spacing: 2px;
+  animation: launchPulse 0.5s ease-in-out infinite alternate;
+}
+
+@keyframes launchPulse {
+  from { opacity: 0.7; }
+  to   { opacity: 1; }
+}
+
+.boot-cursor {
+  display: inline-block;
+  color: #00bfff;
+  font-size: 14px;
+  margin-left: 2px;
+  animation: blink 0.7s step-end infinite;
+}
+
+@keyframes blink {
+  0%, 100% { opacity: 1; }
+  50%       { opacity: 0; }
+}
+
+/* ── PROGRESS ──────────────────────────── */
+.boot-progress-wrap {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.boot-progress-hud {
+  display: flex;
+  justify-content: space-between;
+  align-items: baseline;
+}
+
+.boot-progress-label {
+  font-family: monospace;
+  font-size: 9px;
+  letter-spacing: 5px;
+  color: rgba(0, 191, 255, 0.5);
+  text-transform: uppercase;
+}
+
+.boot-progress-pct {
+  font-family: 'Courier New', monospace;
+  font-size: 28px;
+  font-weight: 700;
+  color: #00bfff;
+  text-shadow: 0 0 16px rgba(0, 191, 255, 0.7);
+  line-height: 1;
+  min-width: 70px;
+  text-align: right;
+}
+
+.boot-pct-sym {
+  font-size: 16px;
+  opacity: 0.7;
+}
+
+/* Segmented bar */
+.boot-seg-track {
+  display: flex;
+  gap: 3px;
+  height: 8px;
+}
+
+.boot-seg {
+  flex: 1;
+  background: rgba(100, 0, 255, 0.12);
+  border: 1px solid rgba(100, 0, 255, 0.2);
+  border-radius: 1px;
+  transition: background 0.15s, box-shadow 0.15s;
+}
+
+.boot-seg--on {
+  background: linear-gradient(180deg, rgba(100, 200, 255, 0.9), rgba(0, 100, 255, 0.7));
+  border-color: rgba(0, 191, 255, 0.6);
+  box-shadow: 0 0 6px rgba(0, 191, 255, 0.5);
+}
+
+/* Every 5th segment is accent */
+.boot-seg--on:nth-child(5n) {
+  background: linear-gradient(180deg, #00bfff, #7000ff);
+  box-shadow: 0 0 10px rgba(0, 191, 255, 0.8);
+}
+
+.boot-progress-footer {
+  display: flex;
+  justify-content: space-between;
+  margin-top: 2px;
+}
+
+.boot-progress-sys,
+.boot-progress-ver {
+  font-family: monospace;
+  font-size: 9px;
+  letter-spacing: 2px;
+  color: rgba(100, 0, 255, 0.35);
+}
+
+/* ── EXIT ANIMATION ────────────────────── */
+.boot-exit {
+  animation: bootExit 0.8s cubic-bezier(0.7,0,1,1) forwards;
+}
+
+@keyframes bootExit {
+  0%   {
+    opacity: 1;
+    transform: scale(1);
+    filter: brightness(1) contrast(1);
+  }
+  30%  {
+    opacity: 1;
+    transform: scale(1.01);
+    filter: brightness(2.5) contrast(2) saturate(0);
+  }
+  60%  {
+    opacity: 0.7;
+    transform: scale(1.04) skewX(1deg);
+    filter: brightness(4) contrast(3) saturate(0) hue-rotate(180deg);
+  }
+  100% {
+    opacity: 0;
+    transform: scale(1.1);
+    filter: brightness(8) contrast(4) saturate(0);
+  }
+}
+
+/* ── REDUCED MOTION ────────────────────── */
+@media (prefers-reduced-motion: reduce) {
+  .boot-beam,
+  .boot-crt { display: none; }
+  .boot-logo-ch--scramble { animation: none; }
+  .boot-exit { animation: none; opacity: 0; }
+}

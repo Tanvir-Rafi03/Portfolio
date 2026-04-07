@@ -1,73 +1,69 @@
 import { useEffect, useRef } from "react";
 import "./Cursor.css";
 
+const HOVER_SELECTOR = "a, button, input, textarea, [class*='card'], [class*='btn'], label";
+
 export default function Cursor() {
-  const dotRef = useRef(null);
+  const dotRef  = useRef(null);
   const ringRef = useRef(null);
 
   useEffect(() => {
     let mouseX = 0, mouseY = 0;
-    let ringX = 0, ringY = 0;
+    let ringX  = 0, ringY  = 0;
+    let rafId;
 
+    // ── Dot follows instantly (compositor thread via transform3d)
     const onMove = (e) => {
       mouseX = e.clientX;
       mouseY = e.clientY;
-
       if (dotRef.current) {
-        dotRef.current.style.left = mouseX + "px";
-        dotRef.current.style.top = mouseY + "px";
+        dotRef.current.style.transform =
+          `translate3d(${mouseX}px, ${mouseY}px, 0) translate(-50%, -50%)`;
       }
     };
 
-    // Smooth ring follow
+    // ── Ring lerps behind the dot each frame
     const animate = () => {
-      ringX += (mouseX - ringX) * 0.12;
-      ringY += (mouseY - ringY) * 0.12;
-
+      ringX += (mouseX - ringX) * 0.1;
+      ringY += (mouseY - ringY) * 0.1;
       if (ringRef.current) {
-        ringRef.current.style.left = ringX + "px";
-        ringRef.current.style.top = ringY + "px";
+        ringRef.current.style.transform =
+          `translate3d(${ringX}px, ${ringY}px, 0) translate(-50%, -50%)`;
       }
-
-      requestAnimationFrame(animate);
+      rafId = requestAnimationFrame(animate);
     };
 
-    // Hover effects on interactive elements
-    const onEnter = () => {
+    // ── Single delegated listener — no MutationObserver, no per-element loops
+    const onEnter = (e) => {
+      if (!e.target.matches(HOVER_SELECTOR)) return;
       dotRef.current?.classList.add("cursor-hover");
       ringRef.current?.classList.add("cursor-hover");
     };
-
-    const onLeave = () => {
+    const onLeave = (e) => {
+      if (!e.target.matches(HOVER_SELECTOR)) return;
       dotRef.current?.classList.remove("cursor-hover");
       ringRef.current?.classList.remove("cursor-hover");
     };
 
-    const addHoverListeners = () => {
-      document.querySelectorAll("a, button, [class*='card'], input, textarea").forEach((el) => {
-        el.addEventListener("mouseenter", onEnter);
-        el.addEventListener("mouseleave", onLeave);
-      });
-    };
+    window.addEventListener("mousemove", onMove, { passive: true });
+    // Capture phase so we catch events on all descendants without per-element binding
+    document.addEventListener("mouseover",  onEnter, { passive: true });
+    document.addEventListener("mouseout",   onLeave, { passive: true });
 
-    window.addEventListener("mousemove", onMove);
-    addHoverListeners();
-    animate();
-
-    // Re-apply on DOM changes
-    const observer = new MutationObserver(addHoverListeners);
-    observer.observe(document.body, { childList: true, subtree: true });
+    rafId = requestAnimationFrame(animate);
 
     return () => {
       window.removeEventListener("mousemove", onMove);
-      observer.disconnect();
+      document.removeEventListener("mouseover",  onEnter);
+      document.removeEventListener("mouseout",   onLeave);
+      cancelAnimationFrame(rafId);
     };
   }, []);
 
   return (
     <>
-      <div className="cursor-dot" ref={dotRef}></div>
-      <div className="cursor-ring" ref={ringRef}></div>
+      <div className="cursor-dot"  ref={dotRef}  />
+      <div className="cursor-ring" ref={ringRef} />
     </>
   );
 }

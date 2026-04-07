@@ -1,0 +1,221 @@
+/* ═══════════════════════════════════
+   SCROLL HUD — section nav + ring
+═══════════════════════════════════ */
+
+/* ── SECTION FLASH ────────────────── */
+
+.section-flash {
+  position: fixed;
+  inset: 0;
+  pointer-events: none;
+  z-index: 9000;
+  background: linear-gradient(
+    90deg,
+    transparent 0%,
+    rgba(0, 191, 255, 0.04) 40%,
+    rgba(112, 0, 255, 0.06) 60%,
+    transparent 100%
+  );
+  animation: flashSweep 0.6s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+}
+
+@keyframes flashSweep {
+  0%   { opacity: 0; transform: translateX(-100%); }
+  30%  { opacity: 1; }
+  100% { opacity: 0; transform: translateX(100%); }
+}
+
+/* ── VERTICAL NAV HUD ─────────────── */
+
+.scroll-hud {
+  position: fixed;
+  right: 28px;
+  top: 50%;
+  transform: translateY(-50%);
+  z-index: 800;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 0;
+  pointer-events: auto;
+  list-style: none;
+}
+
+.hud-nodes {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+/* ── NODE WRAP ────────────────────── */
+
+.hud-node-wrap {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+/* ── DOT ──────────────────────────── */
+
+.hud-dot {
+  position: relative;
+  width: 28px;
+  height: 28px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: none;
+  border: none;
+  cursor: pointer;
+  z-index: 1;
+  padding: 0;
+}
+
+.hud-dot-inner {
+  display: block;
+  width: 7px;
+  height: 7px;
+  border-radius: 50%;
+  background: rgba(80, 0, 200, 0.35);
+  border: 1px solid rgba(112, 0, 255, 0.3);
+  transition: all 0.25s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.hud-dot:hover .hud-dot-inner {
+  background: rgba(0, 191, 255, 0.6);
+  border-color: #00bfff;
+  transform: scale(1.3);
+}
+
+.hud-dot--past .hud-dot-inner {
+  background: rgba(112, 0, 255, 0.5);
+  border-color: rgba(112, 0, 255, 0.7);
+}
+
+.hud-dot--active .hud-dot-inner {
+  background: #00bfff;
+  border-color: #00bfff;
+  box-shadow: 0 0 8px #00bfff, 0 0 16px rgba(0, 191, 255, 0.5);
+  transform: scale(1.15);
+}
+
+/* Pulsing ring on active dot */
+.hud-dot-ring {
+  position: absolute;
+  inset: 4px;
+  border-radius: 50%;
+  border: 1px solid rgba(0, 191, 255, 0.5);
+  animation: dotRingPulse 1.6s ease-out infinite;
+  pointer-events: none;
+}
+
+@keyframes dotRingPulse {
+  0%   { transform: scale(1);   opacity: 0.8; }
+  100% { transform: scale(2.8); opacity: 0; }
+}
+
+/* ── LABEL ────────────────────────── */
+
+.hud-label {
+  position: absolute;
+  right: calc(100% + 6px);
+  top: 50%;
+  transform: translateY(-50%) translateX(4px);
+  white-space: nowrap;
+  font-family: monospace;
+  font-size: 9px;
+  letter-spacing: 2px;
+  color: rgba(100, 80, 180, 0.4);
+  pointer-events: none;
+  opacity: 0;
+  transition: opacity 0.2s ease, transform 0.2s cubic-bezier(0.16,1,0.3,1), color 0.2s;
+}
+
+.hud-label--active {
+  opacity: 1;
+  color: #00bfff;
+  transform: translateY(-50%) translateX(0);
+}
+
+.hud-label--hover {
+  opacity: 1;
+  color: rgba(192, 176, 255, 0.8);
+  transform: translateY(-50%) translateX(0);
+}
+
+/* ── CONNECTING LINE ──────────────── */
+
+.hud-line {
+  width: 1px;
+  height: 36px;
+  background: rgba(80, 0, 200, 0.18);
+  position: relative;
+  overflow: hidden;
+  margin: 0;
+}
+
+.hud-line-fill {
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(to bottom, #7000ff, #00bfff);
+  box-shadow: 0 0 6px rgba(0, 191, 255, 0.6);
+  transform-origin: top center;
+  transition: transform 0.15s linear;
+}
+
+/* ── PROGRESS % TEXT ──────────────── */
+
+.hud-pct {
+  margin-top: 10px;
+  font-family: monospace;
+  font-size: 8px;
+  letter-spacing: 2px;
+  color: rgba(100, 80, 180, 0.4);
+  transition: color 0.3s;
+}
+
+.scroll-hud:hover .hud-pct {
+  color: rgba(0, 191, 255, 0.6);
+}
+
+/* ── CIRCULAR PROGRESS RING ───────── */
+
+.scroll-ring {
+  position: fixed;
+  bottom: 32px;
+  right: 26px;
+  width: 44px;
+  height: 44px;
+  z-index: 800;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.scroll-ring svg {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  filter: drop-shadow(0 0 4px rgba(0, 191, 255, 0.3));
+}
+
+.scroll-ring-pct {
+  font-family: monospace;
+  font-size: 9px;
+  letter-spacing: 0;
+  color: rgba(0, 191, 255, 0.7);
+  position: relative;
+  z-index: 1;
+  line-height: 1;
+}
+
+/* ── HIDE ON MOBILE ───────────────── */
+
+@media (max-width: 768px) {
+  .scroll-hud,
+  .scroll-ring {
+    display: none;
+  }
+}

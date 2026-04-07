@@ -1,0 +1,468 @@
+/* ═══════════════════════════════════════════
+   COMMAND PALETTE — Cyberpunk Spotlight
+═══════════════════════════════════════════ */
+
+/* ── TRIGGER PILL (bottom-left) ─────────── */
+
+.cp-trigger {
+  position: fixed;
+  bottom: 28px;
+  left: 28px;
+  z-index: 900;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 8px 14px;
+  background: rgba(4, 0, 22, 0.75);
+  border: 1px solid rgba(112, 0, 255, 0.35);
+  border-radius: 6px;
+  cursor: pointer;
+  backdrop-filter: blur(8px);
+  box-shadow: 0 0 20px rgba(80, 0, 200, 0.15);
+  transition: border-color 0.2s, box-shadow 0.2s, transform 0.2s;
+  clip-path: polygon(0 0, calc(100% - 8px) 0, 100% 8px, 100% 100%, 8px 100%, 0 calc(100% - 8px));
+}
+
+.cp-trigger:hover {
+  border-color: rgba(0, 191, 255, 0.6);
+  box-shadow: 0 0 30px rgba(0, 191, 255, 0.2);
+  transform: translateY(-2px);
+}
+
+.cp-trigger-icon {
+  font-size: 13px;
+  color: #00bfff;
+  text-shadow: 0 0 10px rgba(0, 191, 255, 0.8);
+}
+
+.cp-trigger-label {
+  font-family: monospace;
+  font-size: 10px;
+  letter-spacing: 3px;
+  color: rgba(160, 140, 220, 0.8);
+}
+
+.cp-trigger-kbd {
+  font-family: monospace;
+  font-size: 9px;
+  letter-spacing: 1px;
+  color: rgba(0, 191, 255, 0.45);
+  border: 1px solid rgba(0, 191, 255, 0.2);
+  border-radius: 3px;
+  padding: 1px 6px;
+  background: rgba(0, 191, 255, 0.04);
+}
+
+/* ── BACKDROP ───────────────────────────── */
+
+.cp-backdrop {
+  position: fixed;
+  inset: 0;
+  z-index: 9000;
+  background: rgba(2, 0, 14, 0.75);
+  backdrop-filter: blur(6px);
+  display: flex;
+  align-items: flex-start;
+  justify-content: center;
+  padding-top: 14vh;
+  animation: cpBdIn 0.15s ease both;
+}
+
+@keyframes cpBdIn {
+  from { opacity: 0; }
+  to   { opacity: 1; }
+}
+
+/* ── MODAL ──────────────────────────────── */
+
+.cp-modal {
+  width: 620px;
+  max-width: 92vw;
+  background: rgba(5, 0, 24, 0.97);
+  border: 1px solid rgba(112, 0, 255, 0.4);
+  border-radius: 8px;
+  overflow: hidden;
+  box-shadow:
+    0 0 0 1px rgba(0, 191, 255, 0.06) inset,
+    0 8px 60px rgba(0, 0, 0, 0.8),
+    0 0 80px rgba(80, 0, 200, 0.25),
+    0 0 120px rgba(0, 80, 255, 0.1);
+  animation: cpModalIn 0.18s cubic-bezier(0.16, 1, 0.3, 1) both;
+  position: relative;
+}
+
+@keyframes cpModalIn {
+  from { opacity: 0; transform: translateY(-16px) scale(0.97); }
+  to   { opacity: 1; transform: translateY(0) scale(1); }
+}
+
+/* Top edge glow */
+.cp-modal::before {
+  content: "";
+  position: absolute;
+  top: 0; left: 10%; right: 10%;
+  height: 1px;
+  background: linear-gradient(90deg, transparent, rgba(0, 191, 255, 0.6), transparent);
+  box-shadow: 0 0 12px rgba(0, 191, 255, 0.4);
+}
+
+/* ── HEADER ─────────────────────────────── */
+
+.cp-header {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 14px 18px;
+  border-bottom: 1px solid rgba(100, 0, 255, 0.18);
+  background: rgba(10, 0, 40, 0.4);
+}
+
+.cp-header-prompt {
+  font-family: monospace;
+  font-size: 15px;
+  color: rgba(0, 191, 255, 0.7);
+  flex-shrink: 0;
+  text-shadow: 0 0 10px rgba(0, 191, 255, 0.5);
+}
+
+.cp-input {
+  flex: 1;
+  background: none;
+  border: none;
+  outline: none;
+  font-family: 'Courier New', monospace;
+  font-size: 14px;
+  letter-spacing: 1px;
+  color: #e0d0ff;
+  caret-color: #00bfff;
+}
+
+.cp-input::placeholder {
+  color: rgba(120, 100, 180, 0.4);
+}
+
+.cp-esc {
+  font-family: monospace;
+  font-size: 9px;
+  letter-spacing: 2px;
+  color: rgba(100, 80, 160, 0.5);
+  border: 1px solid rgba(100, 0, 255, 0.2);
+  border-radius: 3px;
+  padding: 2px 8px;
+  background: rgba(60, 0, 120, 0.1);
+  cursor: pointer;
+  transition: color 0.2s, border-color 0.2s;
+  flex-shrink: 0;
+}
+
+.cp-esc:hover {
+  color: rgba(200, 150, 255, 0.8);
+  border-color: rgba(160, 80, 255, 0.5);
+}
+
+/* ── SCANLINE ───────────────────────────── */
+
+.cp-scanline {
+  height: 1px;
+  background: linear-gradient(90deg, transparent, rgba(0, 191, 255, 0.15), rgba(112, 0, 255, 0.15), transparent);
+  animation: cpScan 2.5s ease-in-out infinite;
+}
+
+@keyframes cpScan {
+  0%, 100% { opacity: 0.4; }
+  50%       { opacity: 1; }
+}
+
+/* ── LIST ───────────────────────────────── */
+
+.cp-list {
+  max-height: 360px;
+  overflow-y: auto;
+  padding: 6px 0;
+  scrollbar-width: thin;
+  scrollbar-color: rgba(112, 0, 255, 0.3) transparent;
+}
+
+.cp-list::-webkit-scrollbar       { width: 4px; }
+.cp-list::-webkit-scrollbar-track { background: transparent; }
+.cp-list::-webkit-scrollbar-thumb { background: rgba(112, 0, 255, 0.3); border-radius: 2px; }
+
+/* ── GROUP ──────────────────────────────── */
+
+.cp-group {
+  padding: 4px 0;
+}
+
+.cp-group-label {
+  font-family: monospace;
+  font-size: 9px;
+  letter-spacing: 4px;
+  color: rgba(112, 0, 255, 0.5);
+  padding: 6px 18px 4px;
+  text-transform: uppercase;
+}
+
+/* ── ITEM ───────────────────────────────── */
+
+.cp-item {
+  width: 100%;
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 10px 18px;
+  background: none;
+  border: none;
+  cursor: pointer;
+  text-align: left;
+  transition: background 0.1s;
+  position: relative;
+  overflow: hidden;
+}
+
+.cp-item::before {
+  content: "";
+  position: absolute;
+  left: 0; top: 0; bottom: 0;
+  width: 2px;
+  background: linear-gradient(to bottom, #7000ff, #00bfff);
+  opacity: 0;
+  transition: opacity 0.15s;
+}
+
+.cp-item--active {
+  background: rgba(0, 191, 255, 0.05);
+}
+
+.cp-item--active::before {
+  opacity: 1;
+}
+
+.cp-item-icon {
+  font-size: 13px;
+  width: 22px;
+  text-align: center;
+  color: rgba(0, 191, 255, 0.6);
+  flex-shrink: 0;
+  font-family: monospace;
+  font-style: normal;
+}
+
+.cp-item--active .cp-item-icon {
+  color: #00bfff;
+  text-shadow: 0 0 10px rgba(0, 191, 255, 0.7);
+}
+
+.cp-item-label {
+  flex: 1;
+  font-family: monospace;
+  font-size: 13px;
+  letter-spacing: 1px;
+  color: rgba(200, 190, 230, 0.75);
+  transition: color 0.15s;
+}
+
+.cp-item--active .cp-item-label {
+  color: #e0d0ff;
+}
+
+.cp-item-hint {
+  font-family: monospace;
+  font-size: 10px;
+  letter-spacing: 1px;
+  color: rgba(80, 70, 130, 0.55);
+  transition: color 0.15s;
+}
+
+.cp-item--active .cp-item-hint {
+  color: rgba(0, 191, 255, 0.4);
+}
+
+.cp-item-arrow {
+  font-size: 12px;
+  color: rgba(0, 191, 255, 0.6);
+  margin-left: 4px;
+  flex-shrink: 0;
+  animation: arrowPulse 0.6s ease-in-out infinite alternate;
+}
+
+@keyframes arrowPulse {
+  from { opacity: 0.5; transform: translateX(0); }
+  to   { opacity: 1;   transform: translateX(2px); }
+}
+
+/* ── EMPTY ──────────────────────────────── */
+
+.cp-empty {
+  padding: 32px 18px;
+  font-family: monospace;
+  font-size: 11px;
+  letter-spacing: 3px;
+  color: rgba(100, 80, 160, 0.4);
+  text-align: center;
+}
+
+/* ── FOOTER ─────────────────────────────── */
+
+.cp-footer {
+  display: flex;
+  align-items: center;
+  gap: 20px;
+  padding: 10px 18px;
+  border-top: 1px solid rgba(100, 0, 255, 0.15);
+  background: rgba(6, 0, 28, 0.5);
+  font-family: monospace;
+  font-size: 10px;
+  color: rgba(80, 70, 130, 0.5);
+  letter-spacing: 1px;
+}
+
+.cp-footer kbd {
+  display: inline-block;
+  padding: 1px 5px;
+  background: rgba(60, 0, 120, 0.3);
+  border: 1px solid rgba(100, 0, 255, 0.25);
+  border-radius: 3px;
+  font-family: monospace;
+  font-size: 9px;
+  color: rgba(160, 130, 220, 0.6);
+  margin-right: 3px;
+}
+
+.cp-footer-brand {
+  margin-left: auto;
+  color: rgba(0, 191, 255, 0.3);
+  letter-spacing: 3px;
+}
+
+/* ── SYSTEM INFO PANEL ──────────────────── */
+
+.cp-sysinfo {
+  width: 520px;
+  max-width: 90vw;
+  background: rgba(4, 0, 20, 0.97);
+  border: 1px solid rgba(0, 191, 255, 0.3);
+  border-radius: 8px;
+  overflow: hidden;
+  box-shadow: 0 8px 60px rgba(0,0,0,0.8), 0 0 60px rgba(0,100,255,0.15);
+  animation: cpModalIn 0.18s cubic-bezier(0.16,1,0.3,1) both;
+}
+
+.cp-sysinfo-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 14px 20px;
+  border-bottom: 1px solid rgba(0, 191, 255, 0.15);
+  background: rgba(0, 20, 50, 0.4);
+}
+
+.cp-sysinfo-title {
+  font-family: monospace;
+  font-size: 11px;
+  letter-spacing: 4px;
+  color: rgba(0, 191, 255, 0.7);
+}
+
+.cp-close {
+  background: none;
+  border: none;
+  color: rgba(120, 100, 180, 0.5);
+  font-size: 12px;
+  cursor: pointer;
+  padding: 2px 6px;
+  transition: color 0.2s;
+  font-family: monospace;
+}
+
+.cp-close:hover { color: rgba(255, 80, 80, 0.8); }
+
+.cp-sysinfo-grid {
+  padding: 16px 20px 20px;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.cp-sysinfo-row {
+  display: flex;
+  align-items: baseline;
+  gap: 12px;
+  font-family: monospace;
+  font-size: 12px;
+  animation: lineIn 0.2s ease both;
+}
+
+.cp-sysinfo-row:nth-child(2) { animation-delay: 0.04s; }
+.cp-sysinfo-row:nth-child(3) { animation-delay: 0.08s; }
+.cp-sysinfo-row:nth-child(4) { animation-delay: 0.12s; }
+.cp-sysinfo-row:nth-child(5) { animation-delay: 0.16s; }
+.cp-sysinfo-row:nth-child(6) { animation-delay: 0.20s; }
+.cp-sysinfo-row:nth-child(7) { animation-delay: 0.24s; }
+.cp-sysinfo-row:nth-child(8) { animation-delay: 0.28s; }
+
+@keyframes lineIn {
+  from { opacity: 0; transform: translateX(-6px); }
+  to   { opacity: 1; transform: none; }
+}
+
+.cp-sysinfo-key {
+  width: 88px;
+  flex-shrink: 0;
+  letter-spacing: 2px;
+  font-size: 9px;
+  color: rgba(112, 0, 255, 0.6);
+}
+
+.cp-sysinfo-val {
+  color: rgba(200, 190, 230, 0.85);
+  letter-spacing: 1px;
+}
+
+/* ── TOAST ──────────────────────────────── */
+
+.cp-toast {
+  position: fixed;
+  bottom: 80px;
+  left: 50%;
+  transform: translateX(-50%);
+  z-index: 9999;
+  background: rgba(4, 0, 22, 0.95);
+  border: 1px solid rgba(0, 191, 255, 0.4);
+  border-radius: 6px;
+  padding: 10px 22px;
+  font-family: monospace;
+  font-size: 11px;
+  letter-spacing: 2px;
+  color: #00bfff;
+  box-shadow: 0 0 30px rgba(0, 191, 255, 0.2);
+  animation: toastIn 0.2s cubic-bezier(0.16,1,0.3,1) both;
+  white-space: nowrap;
+}
+
+@keyframes toastIn {
+  from { opacity: 0; transform: translateX(-50%) translateY(10px); }
+  to   { opacity: 1; transform: translateX(-50%) translateY(0); }
+}
+
+/* ── GLITCH OVERLAY ─────────────────────── */
+
+.cp-glitch-overlay {
+  position: fixed;
+  inset: 0;
+  z-index: 99998;
+  pointer-events: none;
+  animation: glitchFlash 0.8s steps(1) forwards;
+}
+
+@keyframes glitchFlash {
+  0%   { background: rgba(0,191,255,0.08); }
+  10%  { background: rgba(112,0,255,0.12); clip-path: inset(20% 0 60% 0); }
+  20%  { background: rgba(0,191,255,0.06); clip-path: inset(55% 0 10% 0); transform: translateX(4px); }
+  30%  { background: rgba(255,0,80,0.05);  transform: translateX(-4px) skewX(2deg); }
+  40%  { background: rgba(0,191,255,0.04); clip-path: inset(0); transform: none; }
+  50%  { background: rgba(112,0,255,0.08); transform: skewX(-1deg); }
+  60%  { background: none; transform: none; }
+  70%  { background: rgba(0,191,255,0.03); clip-path: inset(40% 0 40% 0); }
+  80%  { background: none; transform: none; }
+  100% { background: none; opacity: 0; }
+}

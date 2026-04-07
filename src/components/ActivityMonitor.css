@@ -1,0 +1,332 @@
+/* ═══════════════════════════════════════════
+   ACTIVITY MONITOR — Floating Dev HUD
+═══════════════════════════════════════════ */
+
+.am-wrap {
+  position: fixed;
+  bottom: 28px;
+  right: 28px;
+  z-index: 900;
+  width: 190px;
+
+  background: rgba(4, 0, 18, 0.92);
+  border: 1px solid rgba(112, 0, 255, 0.35);
+  border-radius: 6px;
+  backdrop-filter: blur(10px);
+  box-shadow:
+    0 0 0 1px rgba(0, 191, 255, 0.04) inset,
+    0 8px 40px rgba(0, 0, 0, 0.7),
+    0 0 40px rgba(80, 0, 200, 0.15);
+  clip-path: polygon(
+    0 0,
+    calc(100% - 10px) 0,
+    100% 10px,
+    100% 100%,
+    10px 100%,
+    0 calc(100% - 10px)
+  );
+  overflow: hidden;
+  transition: box-shadow 0.3s, border-color 0.3s;
+  animation: amSlideIn 0.5s cubic-bezier(0.16, 1, 0.3, 1) both;
+  animation-delay: 0.8s;
+}
+
+@keyframes amSlideIn {
+  from { opacity: 0; transform: translateY(20px) scale(0.95); }
+  to   { opacity: 1; transform: none; }
+}
+
+.am-wrap:hover {
+  box-shadow:
+    0 0 0 1px rgba(0, 191, 255, 0.08) inset,
+    0 8px 40px rgba(0, 0, 0, 0.7),
+    0 0 50px rgba(0, 100, 255, 0.15);
+  border-color: rgba(0, 191, 255, 0.28);
+}
+
+/* ── MINIMIZED — only title bar visible ── */
+
+.am-wrap--min .am-body {
+  max-height: 0;
+  overflow: hidden;
+  padding: 0;
+  opacity: 0;
+}
+
+.am-body {
+  max-height: 400px;
+  opacity: 1;
+  transition: max-height 0.35s cubic-bezier(0.16, 1, 0.3, 1),
+              opacity    0.25s ease,
+              padding    0.3s ease;
+}
+
+/* ── TITLE BAR ──────────────────────────── */
+
+.am-titlebar {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 5px 9px;
+  background: rgba(20, 0, 60, 0.45);
+  border-bottom: 1px solid rgba(112, 0, 255, 0.18);
+  cursor: pointer;
+  user-select: none;
+  gap: 6px;
+}
+
+.am-wrap--min .am-titlebar {
+  border-bottom-color: transparent;
+}
+
+.am-titlebar:hover {
+  background: rgba(30, 0, 80, 0.45);
+}
+
+.am-titlebar-left {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.am-status-dot {
+  width: 6px;
+  height: 6px;
+  border-radius: 50%;
+  background: #00c853;
+  box-shadow: 0 0 6px #00c853;
+  flex-shrink: 0;
+  animation: amDotPulse 1.8s ease-in-out infinite;
+}
+
+@keyframes amDotPulse {
+  0%, 100% { opacity: 1; transform: scale(1); }
+  50%       { opacity: 0.5; transform: scale(0.7); }
+}
+
+.am-title {
+  font-family: monospace;
+  font-size: 9px;
+  letter-spacing: 3px;
+  color: rgba(0, 191, 255, 0.7);
+}
+
+.am-titlebar-right {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.am-uptime {
+  font-family: monospace;
+  font-size: 8px;
+  letter-spacing: 1px;
+  color: rgba(112, 0, 255, 0.5);
+}
+
+.am-toggle {
+  background: none;
+  border: none;
+  color: rgba(100, 80, 160, 0.5);
+  font-size: 8px;
+  cursor: pointer;
+  padding: 0;
+  line-height: 1;
+  transition: color 0.2s;
+}
+
+.am-toggle:hover { color: rgba(0, 191, 255, 0.8); }
+
+/* ── BODY ───────────────────────────────── */
+
+.am-body {
+  padding: 8px 10px 10px;
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+
+/* ── CLOCK ──────────────────────────────── */
+
+.am-clock {
+  display: flex;
+  align-items: baseline;
+  gap: 2px;
+}
+
+.am-clock-hms {
+  font-family: 'Courier New', monospace;
+  font-size: 18px;
+  font-weight: 700;
+  color: #e0d0ff;
+  text-shadow: 0 0 20px rgba(160, 80, 255, 0.4);
+  letter-spacing: 1px;
+  line-height: 1;
+}
+
+.am-colon {
+  color: rgba(0, 191, 255, 0.6);
+  animation: colonBlink 1s step-end infinite;
+}
+
+@keyframes colonBlink {
+  0%, 100% { opacity: 1; }
+  50%       { opacity: 0.2; }
+}
+
+.am-clock-ms {
+  font-family: monospace;
+  font-size: 10px;
+  color: rgba(0, 191, 255, 0.5);
+  letter-spacing: 0;
+  min-width: 28px;
+}
+
+.am-clock-tz {
+  margin-left: auto;
+  font-family: monospace;
+  font-size: 8px;
+  letter-spacing: 3px;
+  color: rgba(112, 0, 255, 0.4);
+  align-self: center;
+}
+
+/* ── DIVIDER ────────────────────────────── */
+
+.am-divider {
+  height: 1px;
+  background: linear-gradient(90deg, rgba(112, 0, 255, 0.2), rgba(0, 191, 255, 0.1), transparent);
+}
+
+/* ── METRICS ────────────────────────────── */
+
+.am-metrics {
+  display: flex;
+  flex-direction: column;
+  gap: 5px;
+}
+
+.am-metric {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.am-metric-label {
+  font-family: monospace;
+  font-size: 8px;
+  letter-spacing: 2px;
+  color: rgba(120, 100, 180, 0.55);
+  width: 28px;
+  flex-shrink: 0;
+}
+
+.am-metric-track {
+  flex: 1;
+  height: 3px;
+  background: rgba(60, 0, 140, 0.2);
+  border-radius: 2px;
+  overflow: hidden;
+  border: 1px solid rgba(80, 0, 200, 0.15);
+}
+
+.am-metric-fill {
+  height: 100%;
+  border-radius: 2px;
+}
+
+.am-metric-val {
+  font-family: monospace;
+  font-size: 9px;
+  letter-spacing: 1px;
+  width: 32px;
+  text-align: right;
+  flex-shrink: 0;
+}
+
+/* ── ACTIVITY FEED ──────────────────────── */
+
+.am-activity {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+
+.am-activity-label {
+  font-family: monospace;
+  font-size: 8px;
+  letter-spacing: 3px;
+  color: rgba(112, 0, 255, 0.45);
+}
+
+.am-activity-text {
+  font-family: monospace;
+  font-size: 9px;
+  letter-spacing: 0.3px;
+  line-height: 1.4;
+  transition: opacity 0.3s, transform 0.3s;
+}
+
+.am-act--in {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+.am-act--out {
+  opacity: 0;
+  transform: translateY(-4px);
+}
+
+/* ── COMMIT TICKER ──────────────────────── */
+
+.am-commit {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  overflow: hidden;
+}
+
+.am-commit-icon {
+  font-family: monospace;
+  font-size: 8px;
+  letter-spacing: 1px;
+  color: rgba(0, 191, 255, 0.5);
+  background: rgba(0, 191, 255, 0.07);
+  border: 1px solid rgba(0, 191, 255, 0.2);
+  border-radius: 3px;
+  padding: 1px 5px;
+  flex-shrink: 0;
+}
+
+.am-commit-text {
+  font-family: monospace;
+  font-size: 8px;
+  color: rgba(130, 120, 180, 0.6);
+  letter-spacing: 0.3px;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  animation: commitSlide 0.4s cubic-bezier(0.16, 1, 0.3, 1) both;
+}
+
+@keyframes commitSlide {
+  from { opacity: 0; transform: translateY(6px); }
+  to   { opacity: 1; transform: none; }
+}
+
+/* ── HUD CORNERS ────────────────────────── */
+
+.am-corner {
+  position: absolute;
+  width: 8px;
+  height: 8px;
+  border-style: solid;
+  border-color: rgba(0, 191, 255, 0.4);
+  pointer-events: none;
+  transition: border-color 0.3s;
+}
+
+.am-wrap:hover .am-corner { border-color: rgba(0, 191, 255, 0.8); }
+
+.am-tl { top: 2px;    left: 2px;    border-width: 1px 0 0 1px; }
+.am-br { bottom: 2px; right: 2px;   border-width: 0 1px 1px 0; }
