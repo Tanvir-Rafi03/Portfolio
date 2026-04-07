@@ -22,3 +22,10 @@ dist-ssr
 *.njsproj
 *.sln
 *.sw?
+
+# Claude Code internals
+.claude/
+.claude-flow/
+.swarm/
+.mcp.json
+CLAUDE.md
