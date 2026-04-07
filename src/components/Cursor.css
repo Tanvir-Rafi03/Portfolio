@@ -1,6 +1,6 @@
-/* Hide default cursor */
-* {
-  cursor: none !important;
+/* Hide default cursor — desktop only */
+@media (pointer: fine) {
+  * { cursor: none !important; }
 }
 
 /* INNER DOT */
@@ -72,4 +72,10 @@
   border-color: rgba(160, 80, 255, 0.7);
   background: rgba(100, 0, 255, 0.05);
   box-shadow: 0 0 20px rgba(120, 0, 255, 0.25);
+}
+
+/* Hide cursor on touch devices */
+@media (pointer: coarse) {
+  .cursor-dot,
+  .cursor-ring { display: none !important; }
 }
