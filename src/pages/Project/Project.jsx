@@ -89,6 +89,31 @@ const projects = [
       </svg>
     ),
   },
+  {
+    index: "05",
+    title: "NieR: Automata",
+    desc: "Immersive fan tribute website for NieR: Automata — cinematic layout, atmospheric visuals, and fluid animations capturing the game's dystopian aesthetic.",
+    skills: ["HTML", "CSS", "JavaScript"],
+    category: "frontend",
+    featured: false,
+    demo: "https://nier-automata-website.vercel.app/",
+    github: "https://github.com/Tanvir-Rafi03/nier-automata-website",
+    gradient: "linear-gradient(135deg, rgba(30,20,10,0.30) 0%, rgba(180,145,60,0.22) 100%)",
+    accent: "#c9a84c",
+    icon: (
+      <svg viewBox="0 0 48 48" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round">
+        <circle cx="24" cy="16" r="8" />
+        <line x1="24" y1="8" x2="24" y2="4" />
+        <line x1="20" y1="9" x2="17" y2="6" />
+        <line x1="28" y1="9" x2="31" y2="6" />
+        <path d="M16 24 Q10 28 10 36 L38 36 Q38 28 32 24" />
+        <line x1="18" y1="36" x2="16" y2="44" />
+        <line x1="30" y1="36" x2="32" y2="44" />
+        <line x1="24" y1="24" x2="24" y2="36" />
+        <line x1="20" y1="20" x2="28" y2="20" />
+      </svg>
+    ),
+  },
 ];
 
 const FILTERS = [
